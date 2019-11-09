@@ -1,5 +1,4 @@
 // TRIANGLEPATH
-//https://algospot.com/judge/problem/read/TRIANGLEPATH
 #include <iostream>
 
 int main(void){
