@@ -17,7 +17,6 @@ int main(void){
       }
 
       std::cout<<std::endl;
-      std::cout<<"test2"<<std::endl;
     }
 
 
