@@ -1,48 +1,105 @@
 <html>
+
 <head>
-<title>:: JAVASCRIPT 음악 재생 ::</title>
-<script type="text/javascript">
+  <title>:: JAVASCRIPT 음악 재생 ::</title>
+  <script type="text/javascript">
+    var audio = new Audio();
+    audio.src = "./Summer.mp3";
 
-  var audio = new Audio();
-  audio.src = "./Summer.mp3";
+    function printClock() {
+      var clock = document.getElementById("clock"); // 출력할 장소 선택
+      var currentDate = new Date(); // 현재시간
+      var calendar = currentDate.getFullYear() + "-" + (currentDate.getMonth() + 1) + "-" + currentDate.getDate() // 현재 날짜
+      var currentHours = addZeros(currentDate.getHours(), 2);
+      var currentMinute = addZeros(currentDate.getMinutes(), 2);
+      var currentSeconds = addZeros(currentDate.getSeconds(), 2);
 
-  function printClock() {
-
-      var clock = document.getElementById("clock");            // 출력할 장소 선택
-      var currentDate = new Date();                                     // 현재시간
-      var calendar = currentDate.getFullYear() + "-" + (currentDate.getMonth()+1) + "-" + currentDate.getDate() // 현재 날짜
-      var amPm = 'AM'; // 초기값 AM
-      var currentHours = addZeros(currentDate.getHours(),2);
-      var currentMinute = addZeros(currentDate.getMinutes() ,2);
-      var currentSeconds =  addZeros(currentDate.getSeconds(),2);
-
-      if(currentSeconds == 20){// 50초 이상일 때 색을 변환해 준다.
-         audio.play();
-         currentSeconds = '<span style="color:#de1951;">'+currentSeconds+'</span>';
+      if (currentSeconds == 20) { // 50초 이상일 때 색을 변환해 준다.
+        //audio.play();
+        console.log("실행했어요");
+        currentSeconds = '<span style="color:#de1951;">' + currentSeconds + '</span>';
       }
-      clock.innerHTML = currentHours+":"+currentMinute+":"+currentSeconds +" <span style='font-size:50px;'>"+ amPm+"</span>"; //날짜를 출력해 줌
+      clock.innerHTML = currentHours + ":" + currentMinute + ":" + currentSeconds; //날짜를 출력해 줌
+      setTimeout("printClock()", 1000); // 1초마다 printClock() 함수 호출
+    }
 
-      setTimeout("printClock()",1000);         // 1초마다 printClock() 함수 호출
-  }
-
-  function addZeros(num, digit) { // 자릿수 맞춰주기
-  	  var zero = '';
-  	  num = num.toString();
-  	  if (num.length < digit) {
-  	    for (i = 0; i < digit - num.length; i++) {
-  	      zero += '0';
-  	    }
-  	  }
-  	  return zero + num;
-  }
-
-</script>
+    function addZeros(num, digit) { // 자릿수 맞춰주기
+      var zero = '';
+      num = num.toString();
+      if (num.length < digit) {
+        for (i = 0; i < digit - num.length; i++) {
+          zero += '0';
+        }
+      }
+      return zero + num;
+    }
+  </script>
 </head>
-<body onload="printClock()">
-  <div style="border:1px solid #dedede; width:600px; height:250px; line-height:250px; color:#666;font-size:100px; text-align:center;" id="clock">
-	</div>
-    <input type="button" onClick="audio.play();" value="PLAY"/>
-    <input type="button" onClick="audio.pause();" value="PAUSE"/>
-    <input type="number" onChange="audio.volume=this.value"/>
+
+<body onload="printClock()" bgcolor=#666>
+  <style>
+
+
+  .Title_box,.Time_box,.OnAir_box,.Text_box {
+    margin: 10px;
+    border: 2px solid #BBD1E8;
+    width: 600px;
+    color: #A4B9C6;
+    text-align: center;
+  }
+
+  .Title_box {
+    height: 150px;
+    line-height: 75px;
+    font-size: 25px;
+  }
+
+    .Time_box {
+      height: 250px;
+      line-height: 250px;
+      font-size: 100px;
+    }
+
+    .OnAir_box {
+      height: 150px;
+      line-height: 25px;
+      font-size: 50px;
+      color: #ff4040;
+    }
+    .Text_box {
+      height: 150px;
+      line-height: 25px;
+      font-size: 25px;
+    }
+
+    .Button_box {
+      margin: 10px;
+      border: 2px solid #BBD1E8;
+      width: 600px;
+      height: 50px;
+    }
+  </style>
+
+  <div class="Title_box">
+    <h1>엠프 방송 지원 프로그램</h1>
+  </div>
+
+  <div class="Time_box" id="clock">
+  </div>
+
+  <div class="OnAir_box">
+    <h2>OnAir</h2>
+  </div>
+  <div class="Text_box">
+    <h3>다음에 나올 노래는 *입니다.</h3>
+    <h3>다음 노래 까지 남은 시간 *시간 *분 *초.</h3>
+  </div>
+
+  <div class="Button_box">
+      <input type="button" onClick="audio.play();" value="PLAY" />
+      <input type="button" onClick="audio.pause();" value="PAUSE" />
+      <input type="number" onChange="audio.volume=this.value" />
+  </div>
 </body>
+
 </html>
