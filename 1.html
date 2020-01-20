@@ -3,8 +3,121 @@
 <head>
   <title>:: JAVASCRIPT 음악 재생 ::</title>
   <script type="text/javascript">
-    var audio = new Audio();
-    audio.src = "./Summer.mp3";
+    BroadCast = new Array(7); //전역 변수
+    var once = true;
+
+    function BroadCastStruct() { //자바스크립트식 구조체 구현
+      var name = "";
+      var audio;
+      var Hours = 0;
+      var Minute = 0;
+    }
+
+    function BroadCast_Value() {
+
+      BroadCast[0] = new BroadCastStruct();
+
+      BroadCast[0].name = "오전 일과 시작 전";
+      BroadCast[0].audio = new Audio();
+      BroadCast[0].audio.src = "./Summer.mp3";
+
+      BroadCast[0].Hours = 8;
+      BroadCast[0].Minute = 25;
+
+      BroadCast[1] = new BroadCastStruct();
+
+      BroadCast[1].name = "오전 일과 시작";
+      BroadCast[1].audio = new Audio();
+      BroadCast[1].audio.src = "./Summer.mp3";
+
+      BroadCast[1].Hours = 8;
+      BroadCast[1].Minute = 30;
+
+      BroadCast[2] = new BroadCastStruct();
+
+      BroadCast[2].name = "오전 일과 끝";
+      BroadCast[2].audio = new Audio();
+      BroadCast[2].audio.src = "./Summer.mp3";
+
+      BroadCast[2].Hours = 12;
+      BroadCast[2].Minute = 00;
+
+      BroadCast[3] = new BroadCastStruct();
+
+      BroadCast[3].name = "오후 일과 시작";
+      BroadCast[3].audio = new Audio();
+      BroadCast[3].audio.src = "./Summer.mp3";
+
+      BroadCast[3].Hours = 13;
+      BroadCast[3].Minute = 00;
+
+      BroadCast[4] = new BroadCastStruct();
+
+      BroadCast[4].name = "체단 시간";
+      BroadCast[4].audio = new Audio();
+      BroadCast[4].audio.src = "./Summer.mp3";
+
+      BroadCast[4].Hours = 16;
+      BroadCast[4].Minute = 00;
+
+      BroadCast[5] = new BroadCastStruct();
+
+      BroadCast[5].name = "하기식";
+      BroadCast[5].audio = new Audio();
+      BroadCast[5].audio.src = "./Summer.mp3";
+
+      BroadCast[5].Hours = 17;
+      BroadCast[5].Minute = 00;
+
+      BroadCast[6] = new BroadCastStruct();
+
+      BroadCast[6].name = "오후 일과 끝";
+      BroadCast[6].audio = new Audio();
+      BroadCast[6].audio.src = "./Summer.mp3";
+
+      BroadCast[6].Hours = 17;
+      BroadCast[6].Minute = 25;
+
+
+    }
+
+    function Get_Now_BroadCast(NowHours, NowMinute) {
+
+      var SimilarHours = 100;
+      var SimilarMinute = 100;
+      var NowBroadCast = -1;
+      var HourGap = 0;
+      var MinuteGap = 0;
+
+      for (var i = 0; i < 7; i++) {
+        HourGap = Math.abs(BroadCast[i].Hours - NowHours);
+        MinuteGap = Math.abs(BroadCast[i].Minute - NowMinute);
+
+        if (HourGap < SimilarHours) {
+          SimilarHours = HourGap;
+
+          if (HourGap == SimilarHours && MinuteGap < SimilarMinute) {
+            console.log(MinuteGap);
+            SimilarMinute = MinuteGap;
+            NowBroadCast = i;
+          }
+           else {
+            NowBroadCast = i;
+          }
+
+        }
+      }
+
+      if (BroadCast[NowBroadCast].Hours <= NowHours && BroadCast[NowBroadCast].Minute < NowMinute) {
+        NowBroadCast += 1;
+        if (NowBroadCast > 6) {
+          NowBroadCast = 0;
+        }
+      }
+
+      console.log(NowBroadCast);
+      return NowBroadCast;
+    }
 
     function printClock() {
       var clock = document.getElementById("clock"); // 출력할 장소 선택
@@ -14,11 +127,21 @@
       var currentMinute = addZeros(currentDate.getMinutes(), 2);
       var currentSeconds = addZeros(currentDate.getSeconds(), 2);
 
-      if (currentSeconds == 20) { // 50초 이상일 때 색을 변환해 준다.
-        //audio.play();
+      //현재 방송이 무엇인지 정해주는 함수 필요
+      var nowBroadCast = 0;
+
+      if (once) {
+        nowBroadCast = Get_Now_BroadCast(currentHours, currentMinute);
+
+        once = false;
+      }
+
+
+      if (currentSeconds == 20) {
         console.log("실행했어요");
         currentSeconds = '<span style="color:#de1951;">' + currentSeconds + '</span>';
       }
+
       clock.innerHTML = currentHours + ":" + currentMinute + ":" + currentSeconds; //날짜를 출력해 줌
       setTimeout("printClock()", 1000); // 1초마다 printClock() 함수 호출
     }
@@ -36,23 +159,24 @@
   </script>
 </head>
 
-<body onload="printClock()" bgcolor=#666>
+<body onload="BroadCast_Value(),printClock()" bgcolor=#666>
   <style>
+    .Title_box,
+    .Time_box,
+    .OnAir_box,
+    .Text_box {
+      margin: 10px;
+      border: 2px solid #BBD1E8;
+      width: 600px;
+      color: #A4B9C6;
+      text-align: center;
+    }
 
-
-  .Title_box,.Time_box,.OnAir_box,.Text_box {
-    margin: 10px;
-    border: 2px solid #BBD1E8;
-    width: 600px;
-    color: #A4B9C6;
-    text-align: center;
-  }
-
-  .Title_box {
-    height: 150px;
-    line-height: 75px;
-    font-size: 25px;
-  }
+    .Title_box {
+      height: 150px;
+      line-height: 75px;
+      font-size: 25px;
+    }
 
     .Time_box {
       height: 250px;
@@ -62,10 +186,11 @@
 
     .OnAir_box {
       height: 150px;
-      line-height: 25px;
+      line-height: 0px;
       font-size: 50px;
       color: #ff4040;
     }
+
     .Text_box {
       height: 150px;
       line-height: 25px;
@@ -89,6 +214,7 @@
 
   <div class="OnAir_box">
     <h2>OnAir</h2>
+    <h3 style="font-size: 25px;">현재 실행 중인 음악은 * 입니다</h3>
   </div>
   <div class="Text_box">
     <h3>다음에 나올 노래는 *입니다.</h3>
@@ -96,9 +222,9 @@
   </div>
 
   <div class="Button_box">
-      <input type="button" onClick="audio.play();" value="PLAY" />
-      <input type="button" onClick="audio.pause();" value="PAUSE" />
-      <input type="number" onChange="audio.volume=this.value" />
+    <input type="button" onClick="audio.play();" value="PLAY" />
+    <input type="button" onClick="audio.pause();" value="PAUSE" />
+    <input type="number" onChange="audio.volume=this.value" />
   </div>
 </body>
 
